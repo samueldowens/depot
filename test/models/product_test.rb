@@ -34,7 +34,7 @@ description: "yyy", price: 1, image_url: image_url)
 end
 
 test "image url" do
-  ok = %w{ fred.gif fred.jpg fred.png FRED.JPG FRED.Jpg http://a.b.c/x/y/z/fred.gif.more }
+  ok = %w{ fred.gif fred.jpg fred.png FRED.JPG FRED.Jpg http://a.b.c/x/y/z/fred.gif }
   bad = %w{ fred.doc fred.gif/more fred.gif.more }
   ok.each do |name|
     assert new_product(name).valid?, "#{name} should be valid"
@@ -45,7 +45,8 @@ test "image url" do
 end
 
 test "product is not valid without a unique title" do
-  product = Product.new(title: "title", description: "yyy", price: 1, image_url: "fred.gif")
+  first = Product.create(title: "title", description: "yyy", price: 1, image_url: "fred.gif")
+  product = Product.create(title: "title", description: "yyy", price: 1, image_url: "fred.gif")
   assert product.invalid?
   assert_equal ["has already been taken"], product.errors[:title]
 end
